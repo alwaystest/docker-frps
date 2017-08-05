@@ -1,0 +1,26 @@
+version: "2"
+
+services:
+  frps:
+    restart: always
+    build: ./
+    image: eric/frps
+    container_name: frps
+    expose:
+      - "80"
+    ports:
+      - "7000:7000"
+      - "7500:7500"
+    volumes:
+      - "./frp-data:/data:ro"
+    environment:
+      - VIRTUAL_HOST=frp.sample.com
+      - VIRTUAL_NETWORK=nginx-proxy
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=frp.sample.com
+      - LETSENCRYPT_EMAIL=samples@sample.com
+
+networks:
+  default:
+    external:
+      name: dockernginxletsencryptsample_default
