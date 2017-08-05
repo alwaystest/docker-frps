@@ -1,3 +1,9 @@
+Update with docker-compose
+
+Use with https://github.com/gilyes/docker-nginx-letsencrypt-sample to get a frps service with https.
+
+---
+
 [![](https://images.microbadger.com/badges/image/thanosme/frps.svg)](https://microbadger.com/images/thanosme/frps "Get your own image badge on microbadger.com")
 
 # frp
