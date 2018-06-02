@@ -1,25 +1,38 @@
-version: "2"
+version: "3"
 
 services:
   frps:
     restart: always
-    build: ./
+    build:
+      context: .
+      dockerfile: Dockerfile-frps
     image: eric/frps
     container_name: frps
     expose:
-      - "80"
+      - 80
     ports:
       - "7000:7000"
       - "7000:7000/udp"
       - "7500:7500"
     volumes:
-      - "./frp-data:/data:ro"
+      - "./frp-data:/root/data:ro"
+    command: ["-c", "/root/data/frps.ini"]
     environment:
       - VIRTUAL_HOST=frp.sample.com
       - VIRTUAL_NETWORK=nginx-proxy
       - VIRTUAL_PORT=80
       - LETSENCRYPT_HOST=frp.sample.com
       - LETSENCRYPT_EMAIL=samples@sample.com
+
+  frpc:
+    build:
+      context: .
+      dockerfile: Dockerfile-frpc
+    image: eric/frpc
+    container_name: frpc
+    volumes:
+      - "./frp-data:/root/data:ro"
+    command: ["-c", "/root/data/frpc.ini"]
 
 networks:
   default:

@@ -1,0 +1,21 @@
+FROM golang:alpine as builder
+
+RUN apk add --no-cache bash make
+
+COPY ./frp /go/src/github.com/fatedier/frp
+
+RUN cd /go/src/github.com/fatedier/frp \
+ && make \
+ && mv bin/frpc /frpc \
+ && mv bin/frps /frps \
+ && mv conf/frpc.ini /frpc.ini \
+ && mv conf/frps.ini /frps.ini \
+ && make clean
+
+FROM alpine:latest as prod
+
+WORKDIR /root/
+
+COPY --from=0 /frps .
+
+ENTRYPOINT ["./frps"]
